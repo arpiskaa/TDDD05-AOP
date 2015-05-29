@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+	
+<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+<bean name="Ball" class="Ball" />	
+
+<bean name="Game" class="Game" >
+	<property name="m" ref="Ball"></property>	
+</bean>	
+
+<bean name="CoordinateGenerator" class="CoordinateGenerator" />	
+		
+<bean name="LoggingAspect" class="LoggingAspect" />
+
+<aop:config>
+	<aop:aspect id="loggingAspect" ref="LoggingAspect">
+		<aop:pointcut expression="within(Game) || within(Ball)" id="all"/>
+		<aop:before pointcut-ref="all" method="beforeMethodAdvice"/>
+		<aop:after pointcut-ref="all" method="afterMethodAdvice"/>
+	</aop:aspect>
+</aop:config>
+
+</beans>
